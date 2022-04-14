@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './style/App.css';
+import Counter from "./componets/Counter";
+import InputValue from "./componets/InputValue";
+import FetchData from "./componets/FetchData";
+import PostData from "./componets/PostData";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+
+    return (
+        <div className="container">
+            <FetchData title={"Список ToDo"}/>
+            <PostData/>
+        </div>
+    );
 }
 
 export default App;
