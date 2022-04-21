@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Table = ({data}) => {
-    console.log(data)
 
-    function checkStatus(item){
+const Table = ({data, onRowSelect}) => {
+
+    const checkStatus = (item) => {
         return item.completed === false ? "table-danger" : "table-success"
     }
 
@@ -17,16 +17,24 @@ const Table = ({data}) => {
                     <th>Description</th>
                     <th>Modified</th>
                     <th>Name</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                {data.map ((item, index) => (
-                    <tr key={item.id}  className={checkStatus(item)} >
-                        <td>{index}</td>
-                        <td>{item.created}</td>
-                        <td>{item.description}</td>
-                        <td>{item.modified}</td>
-                        <td>{item.client.name}</td>
+                {data.map((item, index) => (
+                    <tr key={item.id} className={checkStatus(item)} >
+                        <td>{index + 1}</td>
+                        <td>{item.createdTodo}</td>
+                        <td onClick={() => onRowSelect(item.id)} >
+                            {item.description}
+                        </td>
+                        <td>{item.modifiedTodo}</td>
+                        <td onClick={() => onRowSelect(item.client_id)}>
+                            {item.clientName}</td>
+                        <td>
+                            <i  className="bi-trash"></i>
+                        </td>
+
                     </tr>
                 ))}
                 </tbody>

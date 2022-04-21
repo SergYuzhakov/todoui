@@ -5,7 +5,7 @@ const MyButton = ({children, ...props}) => {
         /*
         все пропсы , которые мы будем передавать будут применяться к нашей кнопке
          */
-        <button {...props} type="button" className="btn btn-primary">
+        <button {...props} type="button" >
             {children}
         </button>
     );
