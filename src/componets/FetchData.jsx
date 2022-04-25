@@ -16,6 +16,7 @@ const FetchData = ({title}) => {
     const [memoFilter, setMemofilter] = useState('')
     const [selectedSearch, setSelectedsearch] = useState('?filter=')
 
+
     useMemo(() => {
             const setUrl = () => {
                 setFetchurl(initialUrl.concat(selectedSearch, filter))
@@ -50,6 +51,13 @@ const FetchData = ({title}) => {
         setMemofilter(filter)
     }
 
+    const handleKeyDown = (e) => {
+        if(e.key === 'Enter') {
+            console.log('Enter Press')
+            fetchDataFiltered()
+        }
+    }
+
     const resetSearch = () => {
         setSelectedsearch('?filter=')
         setFilter('')
@@ -69,21 +77,22 @@ const FetchData = ({title}) => {
                     onChange={(e) => setFilter(e.target.value)}
                     type='text'
                     placeholder='Search by'
-                />
-                <MyButton onClick={fetchDataFiltered} className="btn btn-primary">
-                    <i className="bi bi-search" style={{fontSize: 15}}></i>
-                </MyButton>
+                    onKeyDown={handleKeyDown}
 
+                />
                 <MySelect
                     className="form-select"
-                    defaultValue='Description or Name'
+                    defaultValue="?filter="
+                    defaultValueName='Description or Name'
                     value={selectedSearch}
                     onChange={onSearch}
                     options={[
                         {value: '/client?partName=', name: 'Name'}
                     ]}
                 />
-
+                <MyButton onClick={fetchDataFiltered} className="btn btn-primary">
+                    <i className="bi bi-search" style={{fontSize: 15}}></i>
+                </MyButton>
 
                 <MyButton onClick={resetSearch} className="btn btn-primary">
                     <i className="bi bi-bootstrap-reboot"></i>
@@ -93,8 +102,9 @@ const FetchData = ({title}) => {
             <hr/>
 
             {
-                isLoading ? <Loader/> : <Table onRowSelect={onRowSelect} data={data}/>
+                isLoading ? <Loader/> : <Table data={data}/>
             }
+
 
         </div>
     );

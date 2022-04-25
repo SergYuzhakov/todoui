@@ -1,46 +1,27 @@
 import React from 'react';
+import MyTable from "./MyTable";
 
+const Table = ({data,onRowSelectInf}) => {
 
-const Table = ({data, onRowSelect}) => {
-
-    const checkStatus = (item) => {
-        return item.completed === false ? "table-danger" : "table-success"
-    }
+    const headTable = ['#', 'Created', 'Description',
+        'Modified', 'Name']
+    const bodyTable = [
+        {value: 'created', name:'createdTodo'},
+        {value: 'desc', name: 'description'},
+        {value: 'mod', name:'modifiedTodo'},
+        {value: 'name', name:'clientName'}]
 
     return (
         <div>
-            <table className="table table-striped">
-                <thead>
-                <tr className="table-primary">
-                    <th>#</th>
-                    <th>Created</th>
-                    <th>Description</th>
-                    <th>Modified</th>
-                    <th>Name</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((item, index) => (
-                    <tr key={item.id} className={checkStatus(item)} >
-                        <td>{index + 1}</td>
-                        <td>{item.createdTodo}</td>
-                        <td onClick={() => onRowSelect(item.id)} >
-                            {item.description}
-                        </td>
-                        <td>{item.modifiedTodo}</td>
-                        <td onClick={() => onRowSelect(item.client_id)}>
-                            {item.clientName}</td>
-                        <td>
-                            <i  className="bi-trash"></i>
-                        </td>
-
-                    </tr>
-                ))}
-                </tbody>
-
-            </table>
-
+            <MyTable
+                className="table table-striped"
+                headClassname="table-primary"
+                theadData={headTable}
+                tbodyValue={bodyTable}
+                tbodyData={data.content}
+                onRowSelectInf={onRowSelectInf}
+            >
+            </MyTable>
         </div>
     );
 };

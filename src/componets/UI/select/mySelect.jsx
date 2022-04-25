@@ -1,12 +1,14 @@
 import React from 'react';
 
-const MySelect = ({options, defaultValue, value, onChange}) => {
+const MySelect = ({className,options,defaultValue,
+                      defaultValueName, value, onChange}) => {
     return (
         <select
+            className={className}
             value={value}
             onChange={event => onChange(event.target.value)}
         >
-            <option value='?filter='>{defaultValue}</option>
+            <option value={defaultValue}>{defaultValueName}</option>
             {options.map(option =>
                 <option key={option.value} value={option.value}>
                     {option.name}
