@@ -2,15 +2,10 @@ import React from 'react';
 
 const MyTable = ({className, headClassname,
                      theadData, tbodyValue,
-                     tbodyData, onRowSelectInf}) => {
+                     tbodyData, funcOnClickRow}) => {
 
     const checkStatus = (item) => {
         return item.completed !== false ? "table-success" : "table-danger"
-    }
-
-    const rowSelectInf =(item) => {
-        if(item === 'description')
-            console.log(item)
     }
 
     return (
@@ -29,10 +24,10 @@ const MyTable = ({className, headClassname,
                 {tbodyData.map((item, index) => (
                     <tr key={item.id} className={checkStatus(item)}>
                         <td>{index + 1}</td>
-                        {tbodyValue.map(v =>
-                            <td onClick={() => rowSelectInf(v.name)}
-                                key={v.value}>
-                                {item[v.name]}
+                        {tbodyValue.map(value =>
+                            <td onClick={() => funcOnClickRow(value.name, item)}
+                                key={value.value}>
+                                {item[value.name]}
                             </td>
                         )}
                     </tr>

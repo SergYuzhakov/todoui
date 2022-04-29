@@ -1,7 +1,7 @@
 import React from 'react';
 import MyTable from "./MyTable";
 
-const Table = ({data,onRowSelectInf}) => {
+const Table = ({pageData,onRowSelectInf}) => {
 
     const headTable = ['#', 'Created', 'Description',
         'Modified', 'Name']
@@ -18,8 +18,8 @@ const Table = ({data,onRowSelectInf}) => {
                 headClassname="table-primary"
                 theadData={headTable}
                 tbodyValue={bodyTable}
-                tbodyData={data.content}
-                onRowSelectInf={onRowSelectInf}
+                tbodyData={pageData.content}
+                funcOnClickRow={onRowSelectInf}
             >
             </MyTable>
         </div>
