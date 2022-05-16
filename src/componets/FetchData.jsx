@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
-import Loader from "./Loader/Loader";
-import Table from "./Table/Table";
+import Loader from "./UI/loader/Loader";
+import Table from "./Table";
 import MyInput from "./UI/input/MyInput";
 import MyButton from "./UI/button/MyButton";
 import MySelect from "./UI/select/mySelect";

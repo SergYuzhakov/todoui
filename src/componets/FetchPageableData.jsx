@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
+import React, {useContext, useEffect, useState} from 'react';
 import Pagination from "./Pagination";
-import Table from "./Table/Table";
+import Table from "./Table";
 import Search from "./Search";
+import {useFetching} from "./hooks/useFetching";
+import Loader from "./UI/loader/Loader";
+import ToDoService from "../API/ToDoService";
+import {PostContext} from "./context";
 
 
-const FetchPageableData = ({title}) => {
+const FetchPageableData = ({onRowSelectInf,title}) => {
 
-        const Url = 'http://localhost:8080/api/todoPageable?'
+        const url = 'http://localhost:8080/api/todoPageable?'
         const todayDate = new Date(new Date().getTime() + 10800000).toISOString()
         const startDate = new Date(new Date()
             .getFullYear(), new Date().getMonth(), 2).toISOString()
@@ -33,33 +36,28 @@ const FetchPageableData = ({title}) => {
 
         const [queryObject, setQueryObject] = useState(queryInitialState)
 
-        const queryPageableValue = new URLSearchParams(queryObject)
-
         const [pageData, setPagedata] = useState(pageDateInitialState);
 
-        const [fetchUrl, setFetchUrl] = useState(Url.concat(queryPageableValue))
+        const queryPageableValue = new URLSearchParams(queryObject)
+
 
         const resetQuery = new URLSearchParams(queryInitialState)
 
+        const [fetch, isLoading, fetchDateError] = useFetching(async (params) => {
+            const data = await ToDoService.getAll(url, params)
+            setPagedata(data.data)
+        })
+
+        const update = useContext(PostContext)
+
         useEffect(() => {
-            const fetch = () => {
-                axios.get(fetchUrl)
-                    .then(response => setPagedata(response.data))
-                console.log(`useEffect: ${fetchUrl}`)
-            };
-            fetch()
-        }, [fetchUrl])
+            fetchData()
+        }, [update])// eslint-disable-line react-hooks/exhaustive-deps
 
         const fetchData = (() => {
-            setFetchUrl(() => Url.concat(queryPageableValue))
+            console.log(update)
+            fetch(queryPageableValue)
         });
-
-        const onRowSelectInf = (rowName, rowItem) => {
-            if (rowName === 'description')
-                console.log(`ToDo Id: ${rowItem.id}`)
-            if (rowName === 'clientName')
-                console.log(`Client Id: ${rowItem.clientId}`)
-        }
 
         const handleKeyDown = (e) => {
             if (e.key === 'Enter') {
@@ -87,7 +85,8 @@ const FetchPageableData = ({title}) => {
 
         const resetSearch = () => {
             setQueryObject(queryInitialState)
-            setFetchUrl(() => Url.concat(resetQuery))
+            fetch(resetQuery)
+
         }
 
         return (
@@ -103,10 +102,18 @@ const FetchPageableData = ({title}) => {
                         fetchData={fetchData}
                         reset={resetSearch}/>
                     <hr/>
-                    <Table
-                        pageData={pageData}
-                        onRowSelectInf={onRowSelectInf}
-                    />
+                    {
+                        fetchDateError &&
+                        <h6>Network Error: Data Server Error</h6>
+                    }
+
+                    {
+                        isLoading ? <Loader/> :
+                            <Table
+                                pageData={pageData}
+                                onRowSelectInf={onRowSelectInf}
+                            />
+                    }
                     <hr/>
                     <Pagination
                         incrementPage={incPage}

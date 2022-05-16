@@ -1,5 +1,5 @@
 import React from 'react';
-import MyTable from "./MyTable";
+import MyTable from "./UI/table/MyTable";
 
 const Table = ({pageData,onRowSelectInf}) => {
 

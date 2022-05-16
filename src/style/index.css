@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.error-modal-title {
+  background-color: #b6edd1;
+  color: red;
+}
+
+.error-modal-body {
+  background-color: #b6edd1;
+  color: black;
+  padding: 16px;
+
+}
+
+.error-modal-header {
+  color: red;
+
+}
+.success-modal-title {
+  background-color: #b6edd1;
+  border-radius: 25px;
+}
+.success-modal-header {
+  background-color: #b6edd1;
+  height: 80px;
+  border-radius: 25px;
+
+}
+.modal-content {
+  background-color: #b6edd1 !important;
+  border-radius: 25px !important;
+}
