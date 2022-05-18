@@ -16,7 +16,7 @@ export default class ToDoService {
     }
 
 
-    static async updateToDo(url, params) {
+    static async createToDo(url, params) {
 
         const config = {
             headers: {

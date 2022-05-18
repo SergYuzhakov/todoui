@@ -1,7 +1,8 @@
+import React from 'react';
 import {Modal} from "react-bootstrap";
 import MyButton from "../UI/button/MyButton";
 
-const ModalErrorInputData = ({errorShow, errormessage, handleErrorClose}) => {
+const ModalErrorViewData = ({errorShow, errormessage, handleErrorClose}) => {
     return (
         <div>
             <Modal
@@ -37,4 +38,4 @@ const ModalErrorInputData = ({errorShow, errormessage, handleErrorClose}) => {
     );
 };
 
-export default ModalErrorInputData;
+export default ModalErrorViewData;

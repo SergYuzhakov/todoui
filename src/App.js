@@ -1,16 +1,14 @@
 import './style/App.css';
-
-import ModalPostData from "./componets/Modal/ModalPostData";
+import MainToDo from "./componets/MainToDo";
 
 
 function App() {
-    // <FetchData title={"Список ToDo"}/>
 
 
     return (
         <div className="container">
 
-            <ModalPostData/>
+            <MainToDo/>
 
         </div>
     );

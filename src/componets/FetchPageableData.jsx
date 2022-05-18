@@ -8,12 +8,18 @@ import ToDoService from "../API/ToDoService";
 import {PostContext} from "./context";
 
 
-const FetchPageableData = ({onRowSelectInf,title}) => {
+const FetchPageableData = ({onRowSelect, title}) => {
 
         const url = 'http://localhost:8080/api/todoPageable?'
-        const todayDate = new Date(new Date().getTime() + 10800000).toISOString()
-        const startDate = new Date(new Date()
-            .getFullYear(), new Date().getMonth(), 2).toISOString()
+        const todayDate = new Date(new Date()
+            .setHours(23, 59, 59, 999) + 10800000)
+            .toISOString()
+        const startDate = new Date(new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            1
+            ).setHours(0,0,0,0)+ 10800000)
+            .toISOString()
 
         const queryInitialState = {
             page: 0,
@@ -111,7 +117,7 @@ const FetchPageableData = ({onRowSelectInf,title}) => {
                         isLoading ? <Loader/> :
                             <Table
                                 pageData={pageData}
-                                onRowSelectInf={onRowSelectInf}
+                                onRowSelectInf={onRowSelect}
                             />
                     }
                     <hr/>
