@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Modal} from "react-bootstrap";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
-import {ErrorContext} from "../context";
+import {ErrorContext, ResponseDataContext} from "../context";
 import {useFetching} from "../hooks/useFetching";
 import ToDoService from "../../API/ToDoService";
 import Loader from "../UI/loader/Loader";
@@ -10,9 +10,10 @@ import Loader from "../UI/loader/Loader";
 const ModalUpdateToDoData = ({
                                  updateToDo, setUpdateToDo,
                                  updateShow, setUpdateShow,
-                                 setErrorShow
+                                 setErrorShow, setSuccess
                              }) => {
     const setErrorMessage = useContext(ErrorContext)
+    const [responseUpdateData, setResponseUpdateData] = useContext(ResponseDataContext)
 
     const updateUrl = 'http://localhost:8080/api/todo/'
     const patchToDoParams = {
@@ -30,6 +31,12 @@ const ModalUpdateToDoData = ({
         }
         if (response.status === 201) {
             setUpdateShow(false)
+            setSuccess(true)
+            setTimeout(() => {
+                setSuccess(false)
+            }, 3000)
+            setResponseUpdateData(() => response.data)
+
 
         }
     })

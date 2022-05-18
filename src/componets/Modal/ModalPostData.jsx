@@ -5,22 +5,25 @@ import {useFetching} from "../hooks/useFetching";
 import ToDoService from "../../API/ToDoService";
 import Loader from "../UI/loader/Loader";
 import SearchClients from "../SearchClients";
-import {ErrorContext, PostContext} from "../context";
+import {ErrorContext,ModalPostDataContext, PostDataContext, ResponseDataContext} from "../context";
 import FetchPageableData from "../FetchPageableData";
 import InputForm from "../InputForm";
 import ModalSuccessPostData from "./ModalSuccessPostData";
 
 
 const ModalPostData = ({
-        errorShow, setErrorShow,
-        success, setSuccess,
-        onRowSelect
+                           errorShow, setErrorShow,
+                           success, setSuccess,
+                           initialStateToDo,
+                           onRowSelect
 
-}) => {
+                       }) => {
     const [postShow, setPostShow] = useState(false);
     const url = 'http://localhost:8080/api/todo'
     const urlClients = 'http://localhost:8080/api/clients?'
     const setErrorMessage = useContext(ErrorContext)
+    const [postData, setPostData] = useContext(PostDataContext)
+    const [postResponse, setPostResponse] = useContext(ResponseDataContext)
 
     const clientSearchParams = {
         filter: ''
@@ -34,27 +37,6 @@ const ModalPostData = ({
         phoneNumber: ''
     }])
 
-    const initialStateToDo = {
-        id: null,
-        description: '',
-        completed: false,
-        client: {
-            id: null,
-            name: '',
-            elAddress: {
-                email: '',
-                phoneNumber: ''
-            },
-            homeAddress: {
-                city: '',
-                street: '',
-                houseNumber: ''
-            }
-        }
-    };
-
-    const [postData, setPostData] = useState({...initialStateToDo});
-    const [postResponse, setPostResponse] = useState({...initialStateToDo})
 
     const [fetchClients, isLoading, fetchError] = useFetching(async (params) => {
         const response = await ToDoService.getAll(urlClients, params)
@@ -120,13 +102,14 @@ const ModalPostData = ({
 
     return (
         <div>
-            <PostContext.Provider value={postResponse}>
+            <ModalPostDataContext.Provider value={postResponse}>
                 <FetchPageableData
                     onRowSelect={onRowSelect}
                     title={"Список ToDo"}/>
                 <ModalSuccessPostData
                     success={success}/>
-            </PostContext.Provider>
+
+            </ModalPostDataContext.Provider>
 
             <div className="d-grid  d-md-flex justify-content-md-end">
                 <MyButton className="btn btn-primary" onClick={handleShow}>
@@ -173,7 +156,6 @@ const ModalPostData = ({
         </div>
     );
 };
-
 
 
 export default ModalPostData;

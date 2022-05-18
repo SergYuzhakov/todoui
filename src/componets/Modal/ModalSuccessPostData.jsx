@@ -1,10 +1,10 @@
-import React,{useContext} from "react";
+import React, {useContext} from "react";
 import {Modal} from "react-bootstrap";
-import {PostContext} from "../context";
+import {ModalPostDataContext} from "../context";
 
 const ModalSuccessPostData = ({success}) => {
 
-    const response = useContext(PostContext)
+    const response = useContext(ModalPostDataContext)
 
     return (
         <div>
@@ -20,6 +20,7 @@ const ModalSuccessPostData = ({success}) => {
                     <p> Client: {response.client.name}</p>
                     <p> Description: {response.description}</p>
                     <p> Created: {response.created}</p>
+                    <p> Modified: {response.modified}</p>
                 </Modal.Body>
 
             </Modal>

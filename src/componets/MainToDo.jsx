@@ -3,11 +3,33 @@ import ModalPostData from "./Modal/ModalPostData";
 import ModalUpdateToDoData from "./Modal/ModalUpdateToDoData";
 import ModalErrorViewData from "./Modal/ModalErrorViewData";
 import ModalUpdateClientsData from "./Modal/ModalUpdateClientsData";
-import {ErrorContext} from "./context";
+import {ErrorContext, PostDataContext, ResponseDataContext} from "./context";
 
 const MainToDo = () => {
     const [errorShow, setErrorShow] = useState(false)
     const [success, setSuccess] = useState(false)
+
+    const initialStateToDo = {
+        id: null,
+        description: '',
+        completed: false,
+        client: {
+            id: null,
+            name: '',
+            elAddress: {
+                email: '',
+                phoneNumber: ''
+            },
+            homeAddress: {
+                city: '',
+                street: '',
+                houseNumber: ''
+            }
+        }
+    };
+
+    const [postData, setPostData] = useState({...initialStateToDo});
+    const [postResponse, setPostResponse] = useState({...initialStateToDo})
 
     const [updateToDo, setUpdateToDo] = useState({
         id: null,
@@ -46,28 +68,34 @@ const MainToDo = () => {
 
     return (
         <div>
-            <ErrorContext.Provider value={setErrorMessage}>
-                <ModalPostData
-                    errorShow={errorShow}
-                    setErrorShow={setErrorShow}
-                    onRowSelect={onRowSelect}
-                    success={success}
-                    setSuccess={setSuccess}
+            <PostDataContext.Provider value={[postData, setPostData]}>
+                <ResponseDataContext.Provider value={[postResponse, setPostResponse]}>
+                    <ErrorContext.Provider value={setErrorMessage}>
+                        <ModalPostData
+                            errorShow={errorShow}
+                            setErrorShow={setErrorShow}
+                            onRowSelect={onRowSelect}
+                            success={success}
+                            setSuccess={setSuccess}
+                            initialStateToDo={initialStateToDo}
+                        />
 
-                />
+                        <ModalUpdateToDoData
+                            updateToDo={updateToDo}
+                            setUpdateToDo={setUpdateToDo}
+                            updateShow={updateShow}
+                            setUpdateShow={setUpdateShow}
+                            setErrorShow={setErrorShow}
+                            setSuccess={setSuccess}
+                        />
 
-                <ModalUpdateToDoData
-                    updateToDo={updateToDo}
-                    setUpdateToDo={setUpdateToDo}
-                    updateShow={updateShow}
-                    setUpdateShow={setUpdateShow}
-                    setErrorShow={setErrorShow}
-                />
-            </ErrorContext.Provider>
 
-            <ModalUpdateClientsData
+                        <ModalUpdateClientsData
 
-            />
+                        />
+                    </ErrorContext.Provider>
+                </ResponseDataContext.Provider>
+            </PostDataContext.Provider>
 
             <ModalErrorViewData
                 errorShow={errorShow}

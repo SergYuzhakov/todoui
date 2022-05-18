@@ -5,7 +5,7 @@ import Search from "./Search";
 import {useFetching} from "./hooks/useFetching";
 import Loader from "./UI/loader/Loader";
 import ToDoService from "../API/ToDoService";
-import {PostContext} from "./context";
+import {ModalPostDataContext} from "./context";
 
 
 const FetchPageableData = ({onRowSelect, title}) => {
@@ -54,11 +54,11 @@ const FetchPageableData = ({onRowSelect, title}) => {
             setPagedata(data.data)
         })
 
-        const update = useContext(PostContext)
+        const updateData = useContext(ModalPostDataContext)
 
         useEffect(() => {
             fetchData()
-        }, [update])// eslint-disable-line react-hooks/exhaustive-deps
+        }, [updateData])// eslint-disable-line react-hooks/exhaustive-deps
 
         const fetchData = (() => {
             console.log(update)
