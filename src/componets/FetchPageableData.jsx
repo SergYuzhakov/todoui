@@ -61,7 +61,7 @@ const FetchPageableData = ({onRowSelect, title}) => {
         }, [updateData])// eslint-disable-line react-hooks/exhaustive-deps
 
         const fetchData = (() => {
-            console.log(update)
+            console.log(updateData)
             fetch(queryPageableValue)
         });
 
