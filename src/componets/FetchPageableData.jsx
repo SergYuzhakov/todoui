@@ -1,14 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Pagination from "./Pagination";
 import Table from "./Table";
 import Search from "./Search";
 import {useFetching} from "./hooks/useFetching";
 import Loader from "./UI/loader/Loader";
 import ToDoService from "../API/ToDoService";
-import {ModalPostDataContext} from "./context";
 
 
-const FetchPageableData = ({onRowSelect, title}) => {
+const FetchPageableData = ({onRowSelect, title, response}) => {
 
         const url = 'http://localhost:8080/api/todoPageable?'
         const todayDate = new Date(new Date()
@@ -54,14 +53,12 @@ const FetchPageableData = ({onRowSelect, title}) => {
             setPagedata(data.data)
         })
 
-        const updateData = useContext(ModalPostDataContext)
-
         useEffect(() => {
+            console.log(`useEffect in FetchData - ${response.description}`)
             fetchData()
-        }, [updateData])// eslint-disable-line react-hooks/exhaustive-deps
+        }, [response])// eslint-disable-line react-hooks/exhaustive-deps
 
         const fetchData = (() => {
-            console.log(updateData)
             fetch(queryPageableValue)
         });
 

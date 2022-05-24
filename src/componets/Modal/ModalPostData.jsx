@@ -5,23 +5,20 @@ import {useFetching} from "../hooks/useFetching";
 import ToDoService from "../../API/ToDoService";
 import Loader from "../UI/loader/Loader";
 import SearchClients from "../SearchClients";
-import {ErrorContext,ModalPostDataContext, PostDataContext, ResponseDataContext} from "../context";
-import FetchPageableData from "../FetchPageableData";
+import {PostDataContext, ResponseDataContext, ShowContext} from "../context";
 import InputForm from "../InputForm";
-import ModalSuccessPostData from "./ModalSuccessPostData";
 
 
 const ModalPostData = ({
-                           errorShow, setErrorShow,
-                           success, setSuccess,
                            initialStateToDo,
-                           onRowSelect
+                           setErrorMessage
 
                        }) => {
-    const [postShow, setPostShow] = useState(false);
+
     const url = 'http://localhost:8080/api/todo'
     const urlClients = 'http://localhost:8080/api/clients?'
-    const setErrorMessage = useContext(ErrorContext)
+
+    const [show, setShow] = useContext(ShowContext)
     const [postData, setPostData] = useContext(PostDataContext)
     const [postResponse, setPostResponse] = useContext(ResponseDataContext)
 
@@ -49,16 +46,26 @@ const ModalPostData = ({
         console.log(response)
         if (response.status === 422) {
             setErrorMessage(response)
-            setErrorShow(true)
+            setShow({...show, errorShow: true})
         }
         if (response.status === 201) {
-            setPostShow(false)
-            setSuccess(true)
+            setShow({...show, successShow: true,
+                postShow: false,
+                successTitle: "created is"})
             setPostData({...initialStateToDo});
             setTimeout(() => {
-                setSuccess(false)
+                setShow({...show, successShow: false,
+                    postShow: false})
             }, 3000)
-            setPostResponse(() => response.data)
+
+            setPostResponse({
+                ...postResponse,
+                clientName: response.data.client.name,
+                description: response.data.description,
+                created: response.data.created,
+                modified: response.data.modified
+            })
+
         }
 
     })
@@ -69,13 +76,13 @@ const ModalPostData = ({
     }
 
     const handleClose = () => {
-        if (!errorShow) {
-            setPostShow(false);
+        if (!show.errorShow) {
+            setShow({...show, postShow: false});
             setPostData({...initialStateToDo})
         }
-    };
+    }
 
-    const handleShow = () => setPostShow(true);
+    const handleShow = () => setShow({...show, postShow: true})
 
     useEffect(() => {
         const fillData = () => {
@@ -102,20 +109,12 @@ const ModalPostData = ({
 
     return (
         <div>
-            <ModalPostDataContext.Provider value={postResponse}>
-                <FetchPageableData
-                    onRowSelect={onRowSelect}
-                    title={"Список ToDo"}/>
-                <ModalSuccessPostData
-                    success={success}/>
-
-            </ModalPostDataContext.Provider>
 
             <div className="d-grid  d-md-flex justify-content-md-end">
                 <MyButton className="btn btn-primary" onClick={handleShow}>
                     Add ToDo
                 </MyButton>
-                <Modal show={postShow} onHide={handleClose}>
+                <Modal show={show.postShow} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add ToDo</Modal.Title>
                     </Modal.Header>

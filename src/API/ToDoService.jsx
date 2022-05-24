@@ -15,7 +15,6 @@ export default class ToDoService {
         return response;
     }
 
-
     static async createToDo(url, params) {
 
         const config = {
@@ -30,4 +29,13 @@ export default class ToDoService {
             })
         return response
     }
+
+    static async deleteToDo(url){
+        const response = axios.delete(url)
+            .catch(error => {
+                return error.response.data
+            })
+        return response
+    }
+
 }

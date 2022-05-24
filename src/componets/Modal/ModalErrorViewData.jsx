@@ -1,18 +1,26 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Modal} from "react-bootstrap";
 import MyButton from "../UI/button/MyButton";
+import {ShowContext} from "../context";
 
-const ModalErrorViewData = ({errorShow, errormessage, handleErrorClose}) => {
+const ModalErrorViewData = ({errorMessage}) => {
+
+    const [errorShow, setErrorShow] = useContext(ShowContext)
+
+    const handleErrorClose = () => {
+        setErrorShow({...errorShow, errorShow: false});
+    }
+
     return (
         <div>
             <Modal
-                show={errorShow}
+                show={errorShow.errorShow}
             >
                 <Modal.Header bsPrefix="error-modal-header">
                     <Modal.Title
                         bsPrefix="error-modal-title">
                         <p>Validation error.</p>
-                        <p>Error Status: {errormessage.status}</p>
+                        <p>Error Status: {errorMessage.status}</p>
                         <p>Check 'errors' field for details.</p>
                     </Modal.Title>
                 </Modal.Header>
@@ -21,7 +29,11 @@ const ModalErrorViewData = ({errorShow, errormessage, handleErrorClose}) => {
                 >
                     Error Filds:
                     <ul>
-                        {errormessage.errors.map((err, index) => (
+                        {errorMessage.message}
+                    </ul>
+
+                    <ul>
+                        {errorMessage.errors.map((err, index) => (
                             <li key={index}> <h6>{err.field}</h6> : {err.message}</li>
                         ))}
                     </ul>
