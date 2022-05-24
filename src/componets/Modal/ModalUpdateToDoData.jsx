@@ -28,7 +28,8 @@ const ModalUpdateToDoData = ({
         console.log(response)
         if (response.status === 422) {
             setErrorMessage(response)
-            setShow({...show, errorShow: true})
+            setShow({...show, errorShow: true,
+                updateShow: false})
         }
         if (response.status === 201) {
             setShow({
@@ -59,7 +60,8 @@ const ModalUpdateToDoData = ({
         console.log(response)
         if (response.status === 404) {
             setErrorMessage({...errorMessage, message: response.message})
-            setShow({...show, errorShow: true})
+            setShow({...show, errorShow: true
+                })
         }
         if (response.status === 204) {
             setShow({
