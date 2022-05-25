@@ -6,18 +6,26 @@ const ModalAlert = ({
                         title,
                         alertShow,
                         alertClose,
-                        alertFunction
+                        alertFunction,
+    message, error
                     }
 ) => {
+
+    const mess = () => {
+        if(error){return "Network Error: Data Server Error"}
+        return message
+    }
+
     return (
         <div>
+
             <Modal show={alertShow} onHide={alertClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p className="pStyle"> Are you sure?</p>
+                    <p className="pStyle">{mess}</p>
                 </Modal.Body>
 
                 <Modal.Footer>

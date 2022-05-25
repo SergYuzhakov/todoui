@@ -11,6 +11,7 @@ export const useFetching = (callback) => {
             await callback(...arg)
 
         } catch (e) {
+            console.log("Error")
             setError("Data Server Error!")
         } finally {
             setIsLoading(false)

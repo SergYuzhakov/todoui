@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import MyInput from "./UI/input/MyInput";
+import {PostDataContext} from "./context";
 
-const InputForm = ({postdata, setPostdata}) => {
+const InputForm = () => {
+    const [postData, setPostData] = useContext(PostDataContext)
+
     return (
         <div>
             <MyInput
                 className="form-control rounded mb-3"
-                value={postdata.client.elAddress.phoneNumber}
+                value={postData.client.elAddress.phoneNumber}
                 onChange={e => {
-                    setPostdata({
-                        ...postdata,
+                    setPostData({
+                        ...postData,
                         client: {
-                            ...postdata.client,
+                            ...postData.client,
                             elAddress: {
-                                ...postdata.client.elAddress,
+                                ...postData.client.elAddress,
                                 phoneNumber: e.target.value
                             }
                         }
@@ -24,14 +27,14 @@ const InputForm = ({postdata, setPostdata}) => {
 
             <MyInput
                 className="form-control rounded mb-3"
-                value={postdata.client.elAddress.email}
+                value={postData.client.elAddress.email}
                 onChange={e => {
-                    setPostdata({
-                        ...postdata,
+                    setPostData({
+                        ...postData,
                         client: {
-                            ...postdata.client,
+                            ...postData.client,
                             elAddress: {
-                                ...postdata.client.elAddress,
+                                ...postData.client.elAddress,
                                 email: e.target.value
                             }
                         }
@@ -42,9 +45,9 @@ const InputForm = ({postdata, setPostdata}) => {
 
             <MyInput
                 className="form-control rounded mb-3"
-                value={postdata.description}
+                value={postData.description}
                 onChange={e => {
-                    setPostdata({...postdata, description: e.target.value})
+                    setPostData({...postData, description: e.target.value})
                 }}
                 type='text'
                 placeholder='Description'/>

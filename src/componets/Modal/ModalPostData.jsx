@@ -1,45 +1,24 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Modal} from "react-bootstrap";
 import MyButton from "../UI/button/MyButton";
 import {useFetching} from "../hooks/useFetching";
 import ToDoService from "../../API/ToDoService";
 import Loader from "../UI/loader/Loader";
 import SearchClients from "../SearchClients";
-import {ErrorContext, PostDataContext, ResponseDataContext, ShowContext} from "../context";
+import {PostDataContext, ResponseDataContext, ShowContext} from "../context";
 import InputForm from "../InputForm";
 
 
 const ModalPostData = ({
-                           initialStateToDo
-
+                           initialStateToDo, setErrorMessage
 
                        }) => {
 
     const url = 'http://localhost:8080/api/todo'
-    const urlClients = 'http://localhost:8080/api/clients?'
 
     const [show, setShow] = useContext(ShowContext)
     const [postData, setPostData] = useContext(PostDataContext)
     const [postResponse, setPostResponse] = useContext(ResponseDataContext)
-    const [errorMessage, setErrorMessage] = useContext(ErrorContext)
-    const clientSearchParams = {
-        filter: ''
-    }
-    const queryData = new URLSearchParams(clientSearchParams)
-
-    const [clientsData, setClientsData] = useState([{
-        id: null,
-        name: '',
-        email: '',
-        phoneNumber: ''
-    }])
-
-
-    const [fetchClients, isLoading, fetchError] = useFetching(async (params) => {
-        const response = await ToDoService.getAll(urlClients, params)
-        setClientsData(() => response.data)
-
-    })
 
     const [postToDo, isPosting, postError] = useFetching(async (params) => {
         const response = await ToDoService.createToDo(url, params)
@@ -77,11 +56,6 @@ const ModalPostData = ({
 
     })
 
-    const getClients = () => {
-        queryData.set('filter', postData.client.name)
-        fetchClients(queryData)
-    }
-
     const handleClose = () => {
         if (!show.errorShow) {
             setShow({...show, postShow: false});
@@ -91,31 +65,7 @@ const ModalPostData = ({
 
     const handleShow = () => setShow({...show, postShow: true})
 
-    useEffect(() => {
-        const fillData = () => {
-            clientsData.forEach((client) => {
-                if (postData.client.name === client.name) {
-                    setPostData({
-                        ...postData,
-                        client: {
-                            ...postData.client,
-                            elAddress: {
-                                ...postData.client.elAddress,
-                                phoneNumber: client.phoneNumber,
-                                email: client.email
-
-                            }
-                        }
-                    });
-                }
-            })
-        }
-        fillData()
-    }, [postData.client.name])// eslint-disable-line react-hooks/exhaustive-deps
-
-
     return (
-        <div>
 
             <div className="d-grid  d-md-flex justify-content-md-end">
                 <MyButton className="btn btn-primary" onClick={handleShow}>
@@ -127,22 +77,14 @@ const ModalPostData = ({
                     </Modal.Header>
                     <Modal.Body>
                         {
-                            (postError || fetchError) &&
+                            postError &&
                             <h6>Network Error: Data Server Error</h6>
                         }
                         {
-                            (isPosting || isLoading) ? <Loader/> :
+                            isPosting ? <Loader/> :
                                 <form>
-                                    <SearchClients
-                                        postdata={postData}
-                                        setPostdata={setPostData}
-                                        clientsData={clientsData}
-                                        getClients={getClients}
-                                    />
-                                    <InputForm
-                                        postdata={postData}
-                                        setPostdata={setPostData}
-                                    />
+                                    <SearchClients/>
+                                    <InputForm/>
                                 </form>
                         }
                     </Modal.Body>
@@ -159,7 +101,7 @@ const ModalPostData = ({
                 </Modal>
 
             </div>
-        </div>
+
     );
 };
 

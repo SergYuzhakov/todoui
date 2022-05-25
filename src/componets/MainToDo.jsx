@@ -3,9 +3,11 @@ import ModalPostData from "./Modal/ModalPostData";
 import ModalUpdateToDoData from "./Modal/ModalUpdateToDoData";
 import ModalErrorViewData from "./Modal/ModalErrorViewData";
 import ModalUpdateClientsData from "./Modal/ModalUpdateClientsData";
-import {ErrorContext, PostDataContext, ResponseDataContext, ShowContext} from "./context";
+import {ErrorContext, PostDataContext, ResponseDataContext,
+    ShowContext, ClientsContext} from "./context";
 import FetchPageableData from "./FetchPageableData";
 import ModalSuccess from "./Modal/ModalSuccess";
+import DeleteData from "./DeleteData";
 
 const MainToDo = () => {
 
@@ -56,12 +58,18 @@ const MainToDo = () => {
         completed: false
     })
 
-
     const [errorMessage, setErrorMessage] = useState({
         status: null,
         message: null,
         errors: [{}]
-    });
+    })
+
+    const [clientsData, setClientsData] = useState([{
+        id: null,
+        name: '',
+        email: '',
+        phoneNumber: ''
+    }])
 
 
     const onRowSelect = (rowName, rowItem) => {
@@ -84,34 +92,43 @@ const MainToDo = () => {
                 <ResponseDataContext.Provider value={[postResponse, setPostResponse]}>
                     <ErrorContext.Provider value={[errorMessage, setErrorMessage]}>
                         <ShowContext.Provider value={[show, setShow]}>
+                            <ClientsContext.Provider value={[clientsData, setClientsData]}>
 
-                            <FetchPageableData
-                                onRowSelect={onRowSelect}
-                                title={"Список ToDo"}
-                                response={postResponse}
-                            />
+                                <FetchPageableData
+                                    onRowSelect={onRowSelect}
+                                    title={"Список ToDo"}
+                                    response={postResponse}
+                                />
 
-                            <ModalPostData
-                                setErorMessage={setErrorMessage}
-                                initialStateToDo={initialStateToDo}
-                            />
+                                <ModalPostData
+                                    initialStateToDo={initialStateToDo}
+                                    setErrorMessage={setErrorMessage}
+                                />
 
-                            <ModalUpdateToDoData
-                                updateToDo={updateToDo}
-                                setUpdateToDo={setUpdateToDo}
-                            />
+                                <ModalUpdateToDoData
+                                    updateToDo={updateToDo}
+                                    setUpdateToDo={setUpdateToDo}
+                                    setErrorMessage={setErrorMessage}
+                                />
 
-                            <ModalSuccess
-                                response={postResponse}
-                                show={show}
-                            />
+                                <DeleteData
+                                    updateToDo={updateToDo}
+                                />
 
-                            <ModalUpdateClientsData
 
-                            />
-                            <ModalErrorViewData
-                                errorMessage={errorMessage}
-                            />
+                                <ModalSuccess
+                                    response={postResponse}
+                                    show={show}
+                                />
+
+                                <ModalUpdateClientsData
+
+                                />
+                                <ModalErrorViewData
+                                    errorMessage={errorMessage}
+                                />
+
+                            </ClientsContext.Provider>
                         </ShowContext.Provider>
                     </ErrorContext.Provider>
                 </ResponseDataContext.Provider>

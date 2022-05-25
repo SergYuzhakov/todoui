@@ -2,17 +2,16 @@ import React, {useContext} from 'react';
 import {Modal} from "react-bootstrap";
 import MyInput from "../UI/input/MyInput";
 import MyButton from "../UI/button/MyButton";
-import {ErrorContext, ResponseDataContext, ShowContext} from "../context";
+import {ResponseDataContext, ShowContext} from "../context";
 import {useFetching} from "../hooks/useFetching";
 import ToDoService from "../../API/ToDoService";
 import Loader from "../UI/loader/Loader";
-import ModalAlert from "./ModalAlert";
 
 const ModalUpdateToDoData = ({
-                                 updateToDo, setUpdateToDo
-
+                                 updateToDo, setUpdateToDo,
+                                 setErrorMessage
                              }) => {
-    const [errorMessage, setErrorMessage] = useContext(ErrorContext)
+
     const [responseUpdateData, setResponseUpdateData] = useContext(ResponseDataContext)
     const [show, setShow] = useContext(ShowContext)
 
@@ -28,8 +27,10 @@ const ModalUpdateToDoData = ({
         console.log(response)
         if (response.status === 422) {
             setErrorMessage(response)
-            setShow({...show, errorShow: true,
-                updateShow: false})
+            setShow({
+                ...show, errorShow: true,
+                updateShow: false
+            })
         }
         if (response.status === 201) {
             setShow({
@@ -54,38 +55,6 @@ const ModalUpdateToDoData = ({
         }
     })
 
-    const [delToDo, isDeleting, delError] = useFetching(async (id) => {
-        const response = await ToDoService.deleteToDo(updateUrl + id)
-
-        console.log(response)
-        if (response.status === 404) {
-            setErrorMessage({...errorMessage, message: response.message})
-            setShow({...show, errorShow: true
-                })
-        }
-        if (response.status === 204) {
-            setShow({
-                ...show, successShow: true,
-                alertShow: false,
-                updateShow: false,
-                successTitle: 'delete is'
-            })
-            setTimeout(() => {
-                setShow({
-                    ...show, successShow: false,
-                    alertShow: false,
-                    updateShow: false
-                })
-            }, 3000)
-            setResponseUpdateData({
-                ...responseUpdateData,
-                clientName: '',
-                description: updateToDo.description
-            })
-        }
-    })
-
-
     const patch = () => {
         patchQueryData.set('description', updateToDo.description)
         patchQueryData.set('completed', updateToDo.completed)
@@ -102,15 +71,6 @@ const ModalUpdateToDoData = ({
 
     const handleUpdateClose = () => {
         setShow({...show, updateShow: false})
-    }
-
-    const deleteToDo = () => {
-        console.log(`Delete ToDo with id: ${updateToDo.id}`)
-        delToDo(updateToDo.id)
-
-    }
-    const handleAlertClose = () => {
-        setShow({...show, alertShow: false})
     }
 
 
@@ -201,18 +161,6 @@ const ModalUpdateToDoData = ({
 
                     </Modal.Footer>
                 </Modal>
-
-                {
-                    delError &&
-                    <h6>Network Error: Data Server Error</h6>
-                }
-                {isDeleting ? <Loader/> :
-                    <ModalAlert
-                        title="Delete ToDo"
-                        alertShow={show.alertShow}
-                        alertClose={handleAlertClose}
-                        alertFunction={deleteToDo}
-                    />}
 
             </div>
     );
