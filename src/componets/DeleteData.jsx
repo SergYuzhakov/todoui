@@ -55,7 +55,6 @@ const DeleteData = ({updateToDo}) => {
 
     return (
         <div>
-
             {isDeleting ? <Loader/> :
                 <ModalAlert
                     title="Delete ToDo"

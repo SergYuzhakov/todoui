@@ -59,7 +59,6 @@ const ModalPostData = ({
     const handleClose = () => {
         if (!show.errorShow) {
             setShow({...show, postShow: false});
-            setPostData({...initialStateToDo})
         }
     }
 
@@ -78,7 +77,7 @@ const ModalPostData = ({
                     <Modal.Body>
                         {
                             postError &&
-                            <h6>Network Error: Data Server Error</h6>
+                            <h6>Network Error: {postError}</h6>
                         }
                         {
                             isPosting ? <Loader/> :

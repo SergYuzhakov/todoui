@@ -7,14 +7,16 @@ const ModalAlert = ({
                         alertShow,
                         alertClose,
                         alertFunction,
-    message, error
+                        message, error
                     }
 ) => {
 
-    const mess = () => {
-        if(error){return "Network Error: Data Server Error"}
-        return message
-    }
+  const  alertMessage = (e) => {
+      if(e.length > 1){
+          return error
+      }else
+          return message
+  }
 
     return (
         <div>
@@ -25,7 +27,7 @@ const ModalAlert = ({
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p className="pStyle">{mess}</p>
+                    <p className="pStyle">{alertMessage(error)}</p>
                 </Modal.Body>
 
                 <Modal.Footer>

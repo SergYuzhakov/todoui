@@ -18,6 +18,7 @@ const SearchClients = () => {
 
     const [fetchClients, isFetching, fetchError] = useFetching(async (params) => {
         const response = await ToDoService.getAll(urlClients, params)
+
         setClientsData(() => response.data)
 
     })
