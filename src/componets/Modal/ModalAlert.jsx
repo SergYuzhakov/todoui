@@ -12,15 +12,11 @@ const ModalAlert = ({
 ) => {
 
   const  alertMessage = (e) => {
-      if(e.length > 1){
-          return error
-      }else
-          return message
+      return ((e.length > 1) ? error : message)
   }
 
     return (
         <div>
-
             <Modal show={alertShow} onHide={alertClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
