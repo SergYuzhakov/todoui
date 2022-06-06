@@ -8,9 +8,11 @@ export default class MyDataList extends React.Component {
         return (
             <datalist id={id}>
                 {clientsData.map((client) => {
-                    return   <option key={client.id} value={client.id} hidden={true}>
-                        {client.name}
-                    </option>
+                    return <option key={client.id}
+                                   value={client.name + '/' + client.email}
+                                   name={client.name + '/' + client.email}
+                                   data-id={client.id}/>
+
                 })}
             </datalist>
         );
