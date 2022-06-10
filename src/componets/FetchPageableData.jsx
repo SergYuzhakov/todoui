@@ -54,7 +54,6 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
         })
 
         useEffect(() => {
-            console.log(`useEffect in FetchData - ${response.description}`)
             fetchData()
         }, [response])// eslint-disable-line react-hooks/exhaustive-deps
 

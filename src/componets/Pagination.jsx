@@ -11,6 +11,7 @@ const Pagination = ({
     const [totalPage, setTotalpage] = useState(0);
     const [pageNumber, setPageNumber] = useState(0);
 
+
     useEffect(() => {
         const updateTotalPage = () => {
             setTotalpage(() => Math.ceil(pageData.total / pageData.pageable.size));
@@ -18,6 +19,8 @@ const Pagination = ({
         };
         updateTotalPage()
     }, [pageData])
+
+    const pageArray = Array.from({length:totalPage})
 
     return (
         <div className="container">
@@ -30,9 +33,18 @@ const Pagination = ({
                         <i className="bi bi-arrow-left-square"></i>
                     </MyButton>
                 </div>
-                <div className='col'>
-                    <h6> Page {pageNumber} of {totalPage} </h6>
-                </div>
+               <nav aria-label="Page navigation">
+                   <ul className="pagination">
+                       {
+                         pageArray.map( (value, index) =>
+                           <li className="page-item" ><a className="page-link" href="#" >{index + 1}</a></li>
+                           )
+
+                       }
+
+                   </ul>
+
+               </nav>
                 <div className='col'>
                     <MyButton
                         disabled={pageNumber === totalPage || pageNumber > totalPage}

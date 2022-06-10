@@ -7,35 +7,36 @@ const InputForm = () => {
 
     return (
         <div>
-
-            <label className="form-label" htmlFor="phoneNumber">
+            <div className="input-group rounded mb-3">
+            <span className="input-group-text">
                 Phone
-            </label>
-            <MyInput
-                id="phoneNumber"
-                className="form-control rounded mb-3"
-                value={postData.client.elAddress.phoneNumber}
-                onChange={e => {
-                    setPostData({
-                        ...postData,
-                        client: {
-                            ...postData.client,
-                            elAddress: {
-                                ...postData.client.elAddress,
-                                phoneNumber: e.target.value
+            </span>
+                <MyInput
+                    id="phoneNumber"
+                    className="form-control"
+                    value={postData.client.elAddress.phoneNumber}
+                    onChange={e => {
+                        setPostData({
+                            ...postData,
+                            client: {
+                                ...postData.client,
+                                elAddress: {
+                                    ...postData.client.elAddress,
+                                    phoneNumber: e.target.value
+                                }
                             }
-                        }
-                    })
-                }}
-                type='text'
-                placeholder='Client Phone'/>
-
-            <label className="form-label" htmlFor="email">
+                        })
+                    }}
+                    type='text'
+                    placeholder='Client Phone'/>
+            </div>
+            <div className="input-group rounded mb-3">
+            <span className="input-group-text">
                 Email
-            </label>
+            </span>
             <MyInput
                 id="email"
-                className="form-control rounded mb-3"
+                className="form-control"
                 value={postData.client.elAddress.email}
                 onChange={e => {
                     setPostData({
@@ -51,6 +52,7 @@ const InputForm = () => {
                 }}
                 type='email'
                 placeholder='Client Email'/>
+            </div>
 
             <label className="form-label" htmlFor="description">
                 Description

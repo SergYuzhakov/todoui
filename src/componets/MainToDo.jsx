@@ -81,6 +81,11 @@ const MainToDo = () => {
                 completed: rowItem.completed
             })
             setShow({...show, updateShow: true})
+            setPostResponse({
+                ...postResponse,
+                created: rowItem.createdTodo,
+                modified: rowItem.modifiedTodo
+            })
         }
         if (rowName === 'clientName')
             console.log(`Client Id: ${rowItem.clientId}`)

@@ -8,13 +8,18 @@ const MyTable = ({className, headClassname,
         return item.completed !== false ? "table-success" : "table-danger"
     }
 
+    const clickHeader = (header) => {
+        console.log(header, tbodyData)
+
+    }
+
     return (
         <div>
             <table className={className}>
                 <thead>
                 <tr className={headClassname}>
                     {theadData.map(head =>
-                        <th key={head}>
+                        <th onClick={() => clickHeader(head)} key={head}>
                             {head}
                         </th>
                     )}
