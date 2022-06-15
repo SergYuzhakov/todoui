@@ -1,15 +1,21 @@
 import React from 'react';
 import MyTable from "./UI/table/MyTable";
 
-const Table = ({pageData,onRowSelectInf}) => {
+const Table = ({onRowSelectInf}) => {
 
-    const headTable = ['#', 'Created', 'Description',
-        'Modified', 'Name']
+    const headTable = [
+        {value: '#', name: ''},
+        {value: 'Created', name: 'createdTodo'},
+        {value: 'Description', name: 'description'},
+        {value: 'Modified', name: 'modifiedTodo',},
+        {value: 'Name', name: 'clientName'}
+
+    ]
     const bodyTable = [
-        {value: 'created', name:'createdTodo'},
+        {value: 'created', name: 'createdTodo'},
         {value: 'desc', name: 'description'},
-        {value: 'mod', name:'modifiedTodo'},
-        {value: 'name', name:'clientName'}]
+        {value: 'mod', name: 'modifiedTodo'},
+        {value: 'name', name: 'clientName'}]
 
     return (
         <div>
@@ -18,7 +24,6 @@ const Table = ({pageData,onRowSelectInf}) => {
                 headClassname="table-primary"
                 theadData={headTable}
                 tbodyValue={bodyTable}
-                tbodyData={pageData.content}
                 funcOnClickRow={onRowSelectInf}
             >
             </MyTable>

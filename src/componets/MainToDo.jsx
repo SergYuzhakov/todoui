@@ -83,8 +83,7 @@ const MainToDo = () => {
             setShow({...show, updateShow: true})
             setPostResponse({
                 ...postResponse,
-                created: rowItem.createdTodo,
-                modified: rowItem.modifiedTodo
+                created: rowItem.createdTodo
             })
         }
         if (rowName === 'clientName')

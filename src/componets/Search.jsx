@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import MyInput from "./UI/input/MyInput";
 import MyButton from "./UI/button/MyButton";
 import MySelect from "./UI/select/mySelect";
+import {QueryDataContext} from "./context";
 
 const Search = ({
-                    filter, setFilter,
                     handleKey, fetchData, reset
                 }) => {
+
+    const [filter, setFilter] = useContext(QueryDataContext)
 
     const selectShowRows = (select) => {
         setFilter({...filter, size:select});
@@ -21,7 +23,9 @@ const Search = ({
                 type="date"
                 value={filter.fromDate.slice(0, 10)}
                 onChange={(e) => setFilter({
-                    ...filter, fromDate:
+                    ...filter,
+                    page: 0,
+                    fromDate:
                         (e.target.value).concat('T', new Date().toTimeString().slice(0, 8))
                 })}
             >
@@ -33,7 +37,9 @@ const Search = ({
                 type="date"
                 value={filter.toDate.slice(0, 10)}
                 onChange={(e) => setFilter({
-                    ...filter, toDate:
+                    ...filter,
+                    page: 0,
+                    toDate:
                         (e.target.value).concat('T', new Date().toTimeString().slice(0, 8))
                 })}
             >
@@ -42,7 +48,9 @@ const Search = ({
             <MyInput
                 className="form-control"
                 value={filter.filter}
-                onChange={(e) => setFilter({...filter, filter: e.target.value})}
+                onChange={(e) => setFilter({...filter,
+                    page: 0,
+                    filter: e.target.value})}
                 type='text'
                 placeholder='Search by Descriptino or Name'
                 onKeyDown={handleKey}
@@ -61,11 +69,11 @@ const Search = ({
                 ]}
             />
             <MyButton onClick={fetchData} className="btn btn-primary">
-                <i className="bi bi-search" style={{fontSize: 15}}></i>
+                <i className="bi bi-search" style={{fontSize: 15}}/>
             </MyButton>
 
             <MyButton onClick={reset} className="btn btn-primary">
-                <i className="bi bi-bootstrap-reboot"></i>
+                <i className="bi bi-bootstrap-reboot"/>
             </MyButton>
 
         </div>

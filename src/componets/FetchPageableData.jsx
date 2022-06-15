@@ -5,6 +5,7 @@ import Search from "./Search";
 import {useFetching} from "./hooks/useFetching";
 import Loader from "./UI/loader/Loader";
 import ToDoService from "../API/ToDoService";
+import {PageDataContext, QueryDataContext} from "./context";
 
 
 const FetchPageableData = ({onRowSelect, title, response}) => {
@@ -17,7 +18,7 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
             new Date().getFullYear(),
             new Date().getMonth(),
             1
-            ).setHours(0,0,0,0)+ 10800000)
+        ).setHours(0, 0, 0, 0) + 10800000)
             .toISOString()
 
         const queryInitialState = {
@@ -41,21 +42,33 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
 
         const [queryObject, setQueryObject] = useState(queryInitialState)
 
-        const [pageData, setPagedata] = useState(pageDateInitialState);
+        /*
+       Структура pageData.content:
+       {
+       clientId: 1145
+       clientName: "Иван Иванович"
+       completed: false
+       createdTodo: "2022-06-09 22:41"
+       description: "Поиграть с Горынычем в карты"
+       id: 1198
+       modifiedTodo: "2022-06-09 22:41"
+       }
+        */
+
+        const [pageData, setPageData] = useState(pageDateInitialState);
 
         const queryPageableValue = new URLSearchParams(queryObject)
-
 
         const resetQuery = new URLSearchParams(queryInitialState)
 
         const [fetch, isLoading, fetchDateError] = useFetching(async (params) => {
             const data = await ToDoService.getAll(url, params)
-            setPagedata(data.data)
+            setPageData(data.data)
         })
 
         useEffect(() => {
             fetchData()
-        }, [response])// eslint-disable-line react-hooks/exhaustive-deps
+        }, [response.modified])// eslint-disable-line react-hooks/exhaustive-deps
 
         const fetchData = (() => {
             fetch(queryPageableValue)
@@ -65,24 +78,6 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
             if (e.key === 'Enter') {
                 fetchData()
             }
-        }
-
-        const incPage = (totalPage) => {
-            if (pageData.pageable.page < (totalPage - 1)) {
-                queryPageableValue.set('page',
-                    pageData.pageable.page + 1);
-                console.log(`IncPage: page- ${queryObject.page}`)
-            }
-            fetchData()
-        }
-
-        const decPage = (totalPage) => {
-            if (pageData.pageable.page <= (totalPage - 1) && pageData.pageable.page > 0) {
-                queryPageableValue.set('page',
-                    pageData.pageable.page - 1);
-                console.log(`DecPage: page- ${queryObject.page}`)
-            }
-            fetchData()
         }
 
         const resetSearch = () => {
@@ -97,13 +92,20 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
                 <h1 style={{textAlign: 'center'}}>{title}</h1>
                 <hr/>
                 <div>
-                    <Search
-                        filter={queryObject}
-                        setFilter={setQueryObject}
-                        handleKey={handleKeyDown}
-                        fetchData={fetchData}
-                        reset={resetSearch}/>
+                    <QueryDataContext.Provider value={[queryObject, setQueryObject]}>
+                        <Search
+                            handleKey={handleKeyDown}
+                            fetchData={fetchData}
+                            reset={resetSearch}/>
+                        <hr/>
+                        <Pagination
+                            queryPageableValue={queryPageableValue}
+                            fetchData={fetchData}
+                            pageData={pageData}
+                        />
+                    </QueryDataContext.Provider>
                     <hr/>
+
                     {
                         fetchDateError &&
                         <h6>Network Error: Data Server Error</h6>
@@ -111,25 +113,19 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
 
                     {
                         isLoading ? <Loader/> :
-                            <Table
-                                pageData={pageData}
-                                onRowSelectInf={onRowSelect}
-                            />
+                            <PageDataContext.Provider value={[pageData, setPageData]}>
+                                <Table
+                                    onRowSelectInf={onRowSelect}
+                                />
+                            </PageDataContext.Provider>
                     }
                     <hr/>
-                    <Pagination
-                        incrementPage={incPage}
-                        decrementPage={decPage}
-                        pageData={pageData}
-                    />
-                </div>
-                <hr/>
 
+                </div>
             </div>
         )
             ;
     }
 ;
-
 
 export default FetchPageableData;

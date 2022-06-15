@@ -10,7 +10,8 @@ import InputForm from "../InputForm";
 
 
 const ModalPostData = ({
-                           initialStateToDo, setErrorMessage
+                           initialStateToDo,
+                           setErrorMessage
 
                        }) => {
 
@@ -66,40 +67,38 @@ const ModalPostData = ({
 
     return (
 
-            <div className="d-grid  d-md-flex justify-content-md-end">
-                <MyButton className="btn btn-primary" onClick={handleShow}>
-                    Add ToDo
-                </MyButton>
-                <Modal show={show.postShow} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add ToDo</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {
-                            postError &&
-                            <h6>Network Error: {postError}</h6>
-                        }
-                        {
-                            isPosting ? <Loader/> :
-                                <form>
-                                    <SearchClients/>
-                                    <InputForm/>
-                                </form>
-                        }
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <MyButton className="btn btn-secondary" onClick={handleClose}>
-                            Close
-                        </MyButton>
-                        <MyButton className="btn btn-primary" onClick={() => {
-                            postToDo(postData)
-                        }}>
-                            Save Changes
-                        </MyButton>
-                    </Modal.Footer>
-                </Modal>
+        <div className="d-grid  d-md-flex justify-content-md-end">
+            <MyButton className="btn btn-primary" onClick={handleShow}>
+                Add ToDo
+            </MyButton>
+            <Modal show={show.postShow} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add ToDo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {
+                        isPosting ? <Loader/> :
+                            <form>
+                                <SearchClients
+                                    postError={postError}
+                                />
+                                <InputForm/>
+                            </form>
+                    }
+                </Modal.Body>
+                <Modal.Footer>
+                    <MyButton className="btn btn-secondary" onClick={handleClose}>
+                        Close
+                    </MyButton>
+                    <MyButton className="btn btn-primary" onClick={() => {
+                        postToDo(postData)
+                    }}>
+                        Save Changes
+                    </MyButton>
+                </Modal.Footer>
+            </Modal>
 
-            </div>
+        </div>
 
     );
 };

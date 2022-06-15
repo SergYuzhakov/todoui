@@ -17,7 +17,7 @@ const DeleteData = ({updateToDo}) => {
         const response = await ToDoService.deleteToDo(updateUrl + id)
         console.log(response)
         if (response.status === 404) {
-            setErrorMessage({...errorMessage, message: response.message})
+            setErrorMessage(response)
             setShow({...show, errorShow: true})
         }
         if (response.status === 204) {
@@ -37,7 +37,8 @@ const DeleteData = ({updateToDo}) => {
             setResponseData({
                 ...responseData,
                 clientName: updateToDo.name,
-                description: updateToDo.description
+                description: updateToDo.description,
+                modified: null
             })
 
         }
@@ -64,7 +65,6 @@ const DeleteData = ({updateToDo}) => {
                     message="Are you sure?"
                     error={delError}
                 />}
-
 
         </div>
     );
