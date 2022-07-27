@@ -6,11 +6,10 @@ const InputForm = () => {
     const [postData, setPostData] = useContext(PostDataContext)
 
     return (
-        <div>
-            <div className="input-group rounded mb-3">
-            <span className="input-group-text">
-                Phone
-            </span>
+
+        <div className="input-group">
+
+            <div className='form-floating  mb-3'>
                 <MyInput
                     id="phoneNumber"
                     className="form-control"
@@ -29,44 +28,47 @@ const InputForm = () => {
                     }}
                     type='text'
                     placeholder='Client Phone'/>
-            </div>
-            <div className="input-group rounded mb-3">
-            <span className="input-group-text">
-                Email
-            </span>
-            <MyInput
-                id="email"
-                className="form-control"
-                value={postData.client.elAddress.email}
-                onChange={e => {
-                    setPostData({
-                        ...postData,
-                        client: {
-                            ...postData.client,
-                            elAddress: {
-                                ...postData.client.elAddress,
-                                email: e.target.value
-                            }
-                        }
-                    })
-                }}
-                type='email'
-                placeholder='Client Email'/>
+                <label htmlFor='phoneNumber'>Phone</label>
             </div>
 
-            <label className="form-label" htmlFor="description">
-                Description
-            </label>
-            <MyInput
-                className="form-control rounded mb-3"
-                value={postData.description}
-                onChange={e => {
-                    setPostData({...postData, description: e.target.value})
-                }}
-                type='text'
-                placeholder='Description'/>
+            <div className='form-floating  mb-3'>
+                <MyInput
+                    id="email"
+                    className="form-control"
+                    value={postData.client.elAddress.email}
+                    onChange={e => {
+                        setPostData({
+                            ...postData,
+                            client: {
+                                ...postData.client,
+                                elAddress: {
+                                    ...postData.client.elAddress,
+                                    email: e.target.value
+                                }
+                            }
+                        })
+                    }}
+                    type='email'
+                    placeholder='Client Email'/>
+                <label htmlFor='email'>Email</label>
+            </div>
+
+            <div className='form-floating flex-grow-1 mb-3'>
+                <MyInput
+                    className="form-control rounded mb-3"
+                    id='description'
+                    value={postData.description}
+                    onChange={e => {
+                        setPostData({...postData, description: e.target.value})
+                    }}
+                    type='text'
+                    placeholder='Description'/>
+                <label htmlFor='description'>Description</label>
+            </div>
 
         </div>
+
+
     );
 };
 

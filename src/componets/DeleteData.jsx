@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import ModalAlert from "./Modal/ModalAlert";
-import Loader from "./UI/loader/Loader";
 import {ErrorContext, ResponseDataContext, ShowContext} from "./context";
 import {useFetching} from "./hooks/useFetching";
 import ToDoService from "../API/ToDoService";
@@ -56,16 +55,15 @@ const DeleteData = ({updateToDo}) => {
 
     return (
         <div>
-            {isDeleting ? <Loader/> :
-                <ModalAlert
+            <ModalAlert
                     title="Delete ToDo"
                     alertShow={show.alertShow}
                     alertClose={handleAlertClose}
                     alertFunction={deleteToDo}
                     message="Are you sure?"
                     error={delError}
-                />}
-
+                    isDeleting={isDeleting}
+                />
         </div>
     );
 };

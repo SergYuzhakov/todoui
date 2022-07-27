@@ -119,13 +119,12 @@ const FetchPageableData = ({onRowSelect, title, response}) => {
                                 />
                             </PageDataContext.Provider>
                     }
+
                     <hr/>
 
                 </div>
             </div>
-        )
-            ;
-    }
-;
+        );
+    };
 
 export default FetchPageableData;

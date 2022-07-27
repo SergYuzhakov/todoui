@@ -7,6 +7,7 @@ import Loader from "../UI/loader/Loader";
 import SearchClients from "../SearchClients";
 import {PostDataContext, ResponseDataContext, ShowContext} from "../context";
 import InputForm from "../InputForm";
+import SaveButton from "../UI/button/SaveButton";
 
 
 const ModalPostData = ({
@@ -71,30 +72,36 @@ const ModalPostData = ({
             <MyButton className="btn btn-primary" onClick={handleShow}>
                 Add ToDo
             </MyButton>
+
             <Modal show={show.postShow} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add ToDo</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {
-                        isPosting ? <Loader/> :
-                            <form>
-                                <SearchClients
-                                    postError={postError}
-                                />
-                                <InputForm/>
-                            </form>
-                    }
+
+                    <div>
+                        <SearchClients
+                            postError={postError}
+                        />
+                        <InputForm/>
+                    </div>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <MyButton className="btn btn-secondary" onClick={handleClose}>
                         Close
                     </MyButton>
-                    <MyButton className="btn btn-primary" onClick={() => {
-                        postToDo(postData)
-                    }}>
-                        Save Changes
-                    </MyButton>
+
+                    <SaveButton
+                        onClickFunc={() => {
+                            postToDo(postData)
+                        }}
+                        isDisabled={isPosting}
+                        isDoing={isPosting}
+                        title='Save'
+                        doingTitle='Saving...'
+                    />
+
                 </Modal.Footer>
             </Modal>
 
@@ -102,6 +109,5 @@ const ModalPostData = ({
 
     );
 };
-
 
 export default ModalPostData;

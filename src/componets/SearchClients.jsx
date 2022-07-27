@@ -3,9 +3,8 @@ import MyInput from "./UI/input/MyInput";
 import {useFetching} from "./hooks/useFetching";
 import ToDoService from "../API/ToDoService";
 import {ClientsContext, PostDataContext} from "./context";
-import Loader from "./UI/loader/Loader";
-import MyButton from "./UI/button/MyButton";
 import MyList from "./UI/datalist/MyList";
+import SaveButton from "./UI/button/SaveButton";
 
 const SearchClients = ({postError}) => {
     const urlClients = 'http://localhost:8080/api/clients?'
@@ -92,45 +91,46 @@ const SearchClients = ({postError}) => {
 
     return (
 
-        isFetching ? <Loader/> :
-
-            <div className='input-group rounded mb-3'>
+            <div className='container'>
                 {(fetchError || postError) &&
                     <h6>Network Error: Data Server Error</h6>
                 }
-                <span className="input-group-text">
-                          CLient Name
-                    </span>
 
-                <MyInput
-                    list="clients-list"
-                    id="searchName"
-                    className="form-control"
-                    value={postData.client.name}
-                    onChange={handleOnChange}
-                    type='text'
-                    autoFocus
-                    placeholder='Search or Input Client Name'
-                    onKeyDown={handleKeyDown}
+                <div className='form-floating  flex-md-grow-0 mb-3'>
+                            <MyInput
+                                list="clients-list"
+                                id="searchName"
+                                name="inputClient"
+                                className="form-control"
+                                value={postData.client.name}
+                                onChange={handleOnChange}
+                                type='text'
+                                autoFocus
+                                placeholder='Search'
+                                onKeyDown={handleKeyDown}
 
-                />
+                            />
 
-                <MyButton
-                    className="btn btn-outline-secondary"
-                    disabled={isSearch}
-                    onClick={getClients}
-                >
-                    <i className="bi bi-search"/>
-                </MyButton>
-
-                <MyList
-                    ref={selectList}
-                    clientsData={clientsData}
-                    id="clients-list"
-                />
+                    <SaveButton
+                        isDisabled={(isSearch || isFetching)}
+                        onClickFunc={getClients}
+                        isDoing={isFetching}
+                        title={<i className="bi bi-search"/>}
+                        doingTitle='Searching...'
+                    />
+                    <label htmlFor='searchName'>Client Name</label>
+                        </div>
+                        <MyList
+                            ref={selectList}
+                            clientsData={clientsData}
+                            id="clients-list"
+                        />
 
             </div>
-    );
+
+
+    )
+        ;
 };
 
 export default SearchClients;

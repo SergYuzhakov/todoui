@@ -5,7 +5,7 @@ import MyButton from "../UI/button/MyButton";
 import {ResponseDataContext, ShowContext} from "../context";
 import {useFetching} from "../hooks/useFetching";
 import ToDoService from "../../API/ToDoService";
-import Loader from "../UI/loader/Loader";
+import SaveButton from "../UI/button/SaveButton";
 
 const ModalUpdateToDoData = ({
                                  updateToDo, setUpdateToDo,
@@ -75,8 +75,8 @@ const ModalUpdateToDoData = ({
 
 
     return (
-        isPatching ? <Loader/> :
-            <div>
+
+        <div>
                 <Modal show={show.updateShow} onHide={handleUpdateClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Update ToDo</Modal.Title>
@@ -151,9 +151,15 @@ const ModalUpdateToDoData = ({
                         <MyButton className="btn btn-secondary" onClick={handleUpdateClose}>
                             Close
                         </MyButton>
-                        <MyButton className="btn btn-primary" onClick={patch}>
-                            Save Changes
-                        </MyButton>
+
+                        <SaveButton
+                            onClickFunc={patch}
+                            isDisabled={isPatching}
+                            isDoing={isPatching}
+                            title='Save Changes'
+                            doingTitle='Saving...'
+                        />
+
                         <MyButton className="btn btn-danger" onClick={() =>
                             setShow({...show, alertShow: true})}>
                             Delete ToDo
