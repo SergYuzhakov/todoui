@@ -5,6 +5,7 @@ import ToDoService from "../API/ToDoService";
 import {ClientsContext, PostDataContext} from "./context";
 import MyList from "./UI/datalist/MyList";
 import SaveButton from "./UI/button/SaveButton";
+import MyButton from "./UI/button/MyButton";
 
 const SearchClients = ({postError}) => {
     const urlClients = 'http://localhost:8080/api/clients?'
@@ -35,6 +36,24 @@ const SearchClients = ({postError}) => {
             getClients()
         }
     }
+
+    const clearDataInput = () => {
+        setPostData({
+            ...postData,
+            description: '',
+            client: {
+                ...postData.client,
+                name: '',
+                elAddress: {
+                    ...postData.client.elAddress,
+                    email: '',
+                    phoneNumber: ''
+                }
+            }
+        })
+        setIsSearch(true)
+    }
+
 
     const handleOnChange = (e) => {
         e.target.value.length > 2 ? setIsSearch(false) : setIsSearch(true)
@@ -91,42 +110,54 @@ const SearchClients = ({postError}) => {
 
     return (
 
-            <div className='container'>
+        <div>
+                <span>
                 {(fetchError || postError) &&
                     <h6>Network Error: Data Server Error</h6>
                 }
+</span>
+            <div className='input-group mb-3'>
+                <div className='form-floating flex-sm-grow-1'>
+                    <MyInput
+                        list="clients-list"
+                        id="searchName"
+                        name="inputClient"
+                        className="form-control"
+                        value={postData.client.name}
+                        onChange={handleOnChange}
+                        type='text'
+                        autoFocus
+                        placeholder='Search'
+                        onKeyDown={handleKeyDown}
+                    />
 
-                <div className='form-floating  flex-md-grow-0 mb-3'>
-                            <MyInput
-                                list="clients-list"
-                                id="searchName"
-                                name="inputClient"
-                                className="form-control"
-                                value={postData.client.name}
-                                onChange={handleOnChange}
-                                type='text'
-                                autoFocus
-                                placeholder='Search'
-                                onKeyDown={handleKeyDown}
+                    <MyList
+                        ref={selectList}
+                        clientsData={clientsData}
+                        id="clients-list"
+                    />
+                    <label htmlFor='searchName'>Search or Input Client Name</label>
+                </div>
 
-                            />
+                <MyButton
+                    className="btn btn-outline-secondary"
+                    onClick={clearDataInput}>
+                    <i className="bi bi-x-lg"/>
+                </MyButton>
 
-                    <SaveButton
+
+                <SaveButton
                         isDisabled={(isSearch || isFetching)}
                         onClickFunc={getClients}
                         isDoing={isFetching}
                         title={<i className="bi bi-search"/>}
                         doingTitle='Searching...'
                     />
-                    <label htmlFor='searchName'>Client Name</label>
-                        </div>
-                        <MyList
-                            ref={selectList}
-                            clientsData={clientsData}
-                            id="clients-list"
-                        />
+
+                </div>
 
             </div>
+
 
 
     )

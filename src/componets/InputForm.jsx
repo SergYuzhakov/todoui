@@ -7,12 +7,12 @@ const InputForm = () => {
 
     return (
 
-        <div className="input-group">
+        <div>
 
-            <div className='form-floating  mb-3'>
+            <div className='form-floating flex-sm-grow-1'>
                 <MyInput
                     id="phoneNumber"
-                    className="form-control"
+                    className="form-control rounded mb-3"
                     value={postData.client.elAddress.phoneNumber}
                     onChange={e => {
                         setPostData({
@@ -31,10 +31,10 @@ const InputForm = () => {
                 <label htmlFor='phoneNumber'>Phone</label>
             </div>
 
-            <div className='form-floating  mb-3'>
+            <div className='form-floating flex-sm-grow-1'>
                 <MyInput
                     id="email"
-                    className="form-control"
+                    className="form-control rounded mb-3"
                     value={postData.client.elAddress.email}
                     onChange={e => {
                         setPostData({
